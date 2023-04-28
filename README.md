@@ -62,3 +62,22 @@ function actionCreator() {
     return action;
 };
 ```
+
+## Dispatch an Action Event
+
+- `dispatch` method is used to dispatch actions to the Redux store.
+- Calling `store.dispatch()` and passing the value returned from an action creator sends an action back to the store.
+
+```jsx
+const store = Redux.createStore(
+    (state = {login: false}) = > state
+);
+
+const loginAction = () => {
+    return {
+        type: 'LOGIN'
+    }
+};
+
+store.dispatch(loginAction());
+```
