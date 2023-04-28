@@ -33,3 +33,32 @@ const store = Redux.createStore(        // create Redux store
 const currentState = store.getState();  // get state from created store
 ```
 
+## Define a Redux Action
+
+- Since Redux is a state management framework, updating state is one of its core tasks.
+- In Redux, all state updates are triggered by dispatching actions.
+- An action is simply a JS object that contains information about an action event that occurred.
+- The Redux store receives these action objects, then updates the states accordingly.
+- Redux action also carries some data when necessary.
+- The data is optional, but all actions must carry a `type` property that specifies the type of action that occurred.
+
+```jsx
+const action = {
+    type: "LOGIN"
+};
+```
+
+## Define an Action Creator
+
+- After creating an action, the next step is to send it to the Redux store to update the state by defining action creators.
+- Action creator is simply a JS function that returns an action.
+
+```jsx
+const action = {
+    type: 'LOGIN'
+};
+
+function actionCreator() {
+    return action;
+};
+```
