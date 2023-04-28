@@ -18,3 +18,18 @@ const reducer = (state = 5) => {
 
 const store = Redux.createStore(reducer);
 ```
+
+## Get State from the Redux Store
+
+- Retrieve current `state` held in the Redux store object with the `getState` method.
+
+- The code from the previous exercise can be written more concisely
+
+```jsx
+const store = Redux.createStore(        // create Redux store
+    (state = 5) => state
+);
+
+const currentState = store.getState();  // get state from created store
+```
+
