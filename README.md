@@ -180,3 +180,47 @@ const logoutUser = () => {
 - It is important to include a default case in the switch statement because all reducers in the app will run whenever an action is dispatched.
 - It means that it will run through the reducer even if the action isn't related to the reducer.
 - In such cases, it is important that the reducer returns and maintains the current state.
+
+## Use const for Action Types
+
+- A common practice when working with Redux is to assign action types as read-only constant, then reference these constants wherever they are used.
+
+```jsx
+const LOGIN = 'LOGIN';
+const LOGOUT = 'LOGOUT';
+
+const defaultState = {
+    authenticate: false
+};
+
+const authReducer = ( state = defaultState, action ) => {
+    switch (action.type) {
+        case LOGIN:
+            return {
+                authenticated: true;
+            };
+        case LOGOUT:
+            return {
+                authenticated: false;
+            };
+        default: 
+            return state;
+    }
+};
+
+const store = Redux.createStore(authReducer);
+
+const loginUser = () => {
+    return {
+        type: LOGIN
+    }
+};
+
+const logoutUser = () => {
+    return {
+        type: LOGOUT
+    }
+};
+```
+
+- Note: It's generally a convention to write constants in all uppercase. This is standard practice in Redux as well.
