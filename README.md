@@ -224,3 +224,43 @@ const logoutUser = () => {
 ```
 
 - Note: It's generally a convention to write constants in all uppercase. This is standard practice in Redux as well.
+
+## Register a Store Listener
+
+- Aside from `store.dispatch()` method to access the Redux store objects is `store.subscribe()`.
+- This allows you to subscribe listener functions to the store, which are called whenever an action is dispatched against the store.
+- One simple use for this method is to subscribe a function to your store that simply logs a message every time an action is received and the store is updated.
+
+```jsx
+const ADD = 'ADD';
+
+const reducer = (state = 0, action) => {
+    switch(action.type) {
+        case ADD:
+            return state + 1;
+        default: 
+            return state;
+    }
+};
+
+const store = Redux.createStore(reducer);
+
+let count = 0;
+
+const increment = () => {
+    return count++;
+}
+
+store.subscribe(increment);
+
+store.dispatch({type: ADD});
+console.log(count);             // 1
+store.dispatch({type: ADD});
+console.log(count);             // 2
+store.dispatch({type: ADD});
+console.log(count);             // 3
+```
+
+- Note that the count variable, increment function, and store.subscribe method are not directly related to the logic of the rest of the code.
+- It simply 'listens in' to keep track of how many times an ADD action type has been dispatched to the store.
+- This just demonstrates a simple way of how subscriber function can be used to listen to state changes in a Redux store.
