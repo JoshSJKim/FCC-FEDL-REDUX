@@ -318,3 +318,36 @@ const rootReducer = Redux.combineReducers({
 
 const store = Redux.createStore(rootReducer);
 ```
+
+## Send Action Data to the Store
+
+- Exercises up to this point only dealt with actions that contain the `type` information.
+- Specific data can be sent along with the actions.
+- This is very common because actions usually originate from some user interaction and tend to carry some data.
+- The Redux store often needs to know this data.
+
+```jsx
+const ADD_NOTE = 'ADD_NOTE';
+
+const notesReducer = (state = 'initial state', action) => {
+    switch(action.type) {
+        case ADD_NOTE:          
+            return action.text;
+        default:
+            return state;
+    }
+};
+
+const addNoteText = (note) => {
+    return {
+        type: ADD_NOTE,
+        text: note
+    }
+};
+
+const store = Redux.createStore(notesReducer);
+
+console.log(store.getState());          // Initial state
+store.dispatch(addNoteText('Hello!'));  
+console.log(store.getState());          // Hello!
+```
