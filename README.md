@@ -264,3 +264,57 @@ console.log(count);             // 3
 - Note that the count variable, increment function, and store.subscribe method are not directly related to the logic of the rest of the code.
 - It simply 'listens in' to keep track of how many times an ADD action type has been dispatched to the store.
 - This just demonstrates a simple way of how subscriber function can be used to listen to state changes in a Redux store.
+
+## Combine Multiple Reducer
+
+- When the state of the app grows more complex, it may be tempting to divide state into multiple pieces.
+- Remember that in Redux, all app state is held in a single state object in the store.
+- Therefore, Redux provides reducer composition as a solution for a complex state model.
+- Define multiple reducers to handle different pieces of the application state, then compose these reducers together using `combineReducers()` method into a `root reducer`.
+- This root reducer is then passed into the Redux `createStore()` method.
+
+- `combineReducers()` method accepts an object as an argument in which you define properties which associate keys to specific reducer functions.
+- The names given to the keys will be used by Redux as the name for the associated piece of state.
+
+- Typically, it is good practice to create a reducer for each piece of application state when they are distinct or unique in some way.
+
+```jsx
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+
+const counterReducer = (state = 0, action) => {
+    switch(action.type) {
+        case INCREMENT:
+            return state + 1;
+        case DECREMENT:
+            return state - 1;
+        default:
+            return state;
+    }
+};
+
+const LOGIN = 'LOGIN';
+const LOGOUT = 'LOGOUT';
+
+const authReducer = ( state = {authenticated: false}, action) => {
+    switch(action.type) {
+        case LOGIN:
+            return {
+                authenticated: true
+            };
+        case LOGOUT: 
+            return {
+                authenticated: false
+            };
+        default:
+            return state;
+    }
+};
+
+const rootReducer = Redux.combineReducers({
+    auth: authReducer,
+    count: counterReducer
+});
+
+const store = Redux.createStore(rootReducer);
+```
