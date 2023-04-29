@@ -81,3 +81,39 @@ const loginAction = () => {
 
 store.dispatch(loginAction());
 ```
+
+## Handle an Action in the Store
+
+- After an action is created and dispatched, the Redux store needs to know how to respond to that action.
+- This is done with the `reducer` function, which is responsible for the state modifications that take place in response to actions.
+- A `reducer` takes `state` and `action` as arguments, and it always returns a new `state`.
+- It is important to note that this is the ONLY role of the `reducer`.
+
+- Another key principle in Redux is that `state` is read-only.
+- In other words, the `reducer` function must ALWAYS return a new copy of `state` and never modify state directly.
+- Note that Redux does not enforce state immutability.
+- The programmer is responsible for enforcing it in the reducer function code.
+
+```jsx
+const defaultState = {
+    login: false
+};
+
+const reducer = ( state = defaultState, action) => {
+    if (action.type === "LOGIN") {
+        return {
+          login: true
+        };
+    } else {
+      return state
+    }
+};
+
+const store = Redux.createStore(reducer);
+
+const loginAction = () {
+    return {
+        type: 'LOGIN'
+    }
+};
+```
