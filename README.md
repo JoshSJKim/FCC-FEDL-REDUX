@@ -331,8 +331,8 @@ const ADD_NOTE = 'ADD_NOTE';
 
 const notesReducer = (state = 'initial state', action) => {
     switch(action.type) {
-        case ADD_NOTE:          
-            return action.text;
+        case ADD_NOTE:          // When action is dispatched (type: ADD_NOTE)
+            return action.text; // it returns the action.text
         default:
             return state;
     }
@@ -351,3 +351,62 @@ console.log(store.getState());          // Initial state
 store.dispatch(addNoteText('Hello!'));  
 console.log(store.getState());          // Hello!
 ```
+
+## Use Middleware to Handle Asynchronous Actions
+
+- Asynchronous actions are an unavoidable part of web development.
+- At some point, it is necessary to call asynchronous endpoints in the Redux app.
+- Redux provides middleware designed specifically to handle asynchronous actions called `Redux Thunk`.
+
+- To include Redux Thunk, pass it as an argument to `Redux.applyMiddleware()`
+- This statement is then provided as a second optional parameter to the `createStore()` function.
+- Then, to create an asynchronous action, return a function in the action creator that takes `dispatch` as an argument.
+- Within this function, you can dispatch actions and perform asynchronous requests.
+
+```jsx
+const REQUESTING_DATA = 'REQUESTING_DATA';
+const RECEIVED_DATA = 'RECEIVED_DATA';
+
+const requestingData = () => {
+    return {
+        type: REQUESTING_DATA
+    }
+}
+const receivedData = (data) => {
+    return {
+        type: RECEIVED_DATA, users: data.users
+    }
+}
+
+const handleAsync = () => {
+    return function(dispatch) {
+        store.dispatch(requestingData());
+        setTimeout(function() {
+            let data = {
+                users: ['Jeff', 'William', 'Alice']
+            }
+        store.dispatch(receivedData(data))
+        }, 2500);
+    }
+};
+
+const asyncDataReducer = (state = defaultState, action) => {
+    switch(action.type) {
+        case REQUESTING_DATA:
+            return {
+                fetching: true,
+                users: []
+            }
+        case RECEIVED_DATA:
+            return {
+                fetching: false,
+                users: action.users
+            }
+        default: 
+            return state;
+    }
+};
+
+const store = Redux.createStore(
+    asyncDataReducer, Redux.applyMiddleware(ReduxThunk.default)
+);
