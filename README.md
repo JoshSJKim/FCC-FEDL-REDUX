@@ -493,3 +493,45 @@ const addToDo = (todo) => {
 
 const store = Redux.createStore(immutableReducer);
 ```
+
+## Use the Spread Operator on Arrays
+
+- One solution from ES6 to help enforce state immutability in Redux is the spread operator `...`.
+- It has a variety of applications, one of which is to produce a new array from an existing array.
+
+```jsx
+// alternate solution for previous exercise using spread operator
+
+const immutableReducer = (state = todos, action) => {
+    switch(action.type) {
+        case ADD_TO_DO:
+            let newArr = [];                            // declare a new variable newArr with an empty array
+            return newArr = [...todos, action.todo];    // use the spread operator to spread the elements of 'todos' in the new array
+    }                                                   // and include the value of action.todo at the end of the clone array.
+};
+```
+
+- The spread syntax can be used multiple times in array composition in this manner.
+- But it's important to keep in mind that it only makes a shallow copy of the array.
+- In other words, it only provides immutable array operations for one-dimensional arrays.
+
+```jsx
+const immutableReducer = ( state = ['Do not mutate state!'], action) => {
+    switch(action.type) {
+        case 'ADD_TO_DO':
+            let newArr = [];
+            return newArr = [...state, action.todo];
+        default:
+            return state;
+    }
+};
+
+const addToDo = (todo) => {
+    return {
+        type: 'ADD_TO_DO',
+        todo
+    }
+};
+
+const store = Redux.createStore(immutableReducer);
+```
