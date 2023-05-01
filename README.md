@@ -410,3 +410,86 @@ const asyncDataReducer = (state = defaultState, action) => {
 const store = Redux.createStore(
     asyncDataReducer, Redux.applyMiddleware(ReduxThunk.default)
 );
+```
+
+## Write a Counter With Redux
+
+```jsx
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+
+const counterReducer = (state = 0, action) => {
+    switch(action.type) {
+        case INCREMENT:
+            return state + 1
+        case DECREMENT:
+            return state - 1
+        default:
+            return state;
+    }
+};
+
+const incAction = () => {
+    return {
+        type: INCREMENT
+    }
+};
+
+const decAction = () => {
+    return {
+        type: DECREMENT
+    }
+};
+
+const store = Redux.createStore(counterReducer);
+
+store.dispatch(incAction());
+store.dispatch(incAction());    
+console.log(store.getState());  // 2
+store.dispatch(decAction());
+console.log(store.getState());  // 1
+```
+
+## Never Mutate State
+
+- Immutable state means that the state must never be directly modified.
+- Instead, return a new copy of state.
+
+- If a snapshot of the state of a Redux app over time, it would look something like `state 1`, `state 2`, `state 3`, `state 4`, etc.
+- Each state may be similar to the last, but each is a distinct piece of data.
+- This immutability is what makes `time-travel debugging` possible.
+
+- Remember, React does not actively enforce state immutability in its store or reducers; it is the responsibility of the programmer.
+- JavaScript (ES6 in particular) provides several useful tools that can be used to enforce state immutability.
+- Strings and numbers are primitive values and are immutable by nature.
+- But arrays and objects are mutable.
+- The states handled in Redux and React will probably consist of arrays and objects since they are useful data structures for representing many types of information.
+
+```jsx
+const ADD_TO_DO = 'ADD_TO_DO';
+
+const todos = [
+    'Go to the store',
+    'Clean the house',
+    'Cook dinner', 
+    'Learn to code'
+];
+
+const immutableReducer = (state = todos, action) => {
+    switch(action.type) {
+        case ADD_TO_DO:     // Remember not to modify the original state
+            return todos.concat(action.todo) // .push() will modify the original, but .concat() will return a new array.
+        default:
+            return state;
+    }
+};
+
+const addToDo = (todo) => {
+    return {
+        type: ADD_TO_DO,
+        todo
+    }
+};
+
+const store = Redux.createStore(immutableReducer);
+```
