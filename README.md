@@ -535,3 +535,45 @@ const addToDo = (todo) => {
 
 const store = Redux.createStore(immutableReducer);
 ```
+
+## Remove and Item from an Array
+
+- Practice removing items from an array.
+- Remember not to modify the state
+
+```jsx
+const immutableReducer = (state = [0, 1, 2, 3, 4, 5], action) => {
+    switch(action.type) {
+        case 'REMOVE_ITEM':
+            let removedArr = state.filter((elem) => elem !== state[action.index]);
+            return removedArr
+        default:
+            return state;
+    }
+};
+
+const removeItem = (index) => {
+    return {
+        type: 'REMOVE_ITEM',
+        index
+    }
+}
+
+const store = Redux.createStore(immutableReducer);
+
+store.dispatc(removeItem(2));
+console.log(store.getState()) // [0, 1, 3, 4, 5]
+```
+
+## Copy an Object with Object.assign
+
+- When working with objects, `Object.assign()` utility is a useful tool to enforce state immutability.
+- It takes a target object and source objects and maps properties from the source objects to the target object.
+- Any matching properties are overwritten by properties in the source objects.
+- This behavior is commonly used to make shallow copies of objects by passing an empty object as the first argument followed by the object(s) to be copied.
+
+`const newObject = Object.assign({}, obj1, obj2);`
+
+- This will create a new object `newObject`.
+- It contains the properties that exist in obj1 and obj2.
+
