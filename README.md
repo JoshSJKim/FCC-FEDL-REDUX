@@ -561,7 +561,7 @@ const removeItem = (index) => {
 
 const store = Redux.createStore(immutableReducer);
 
-store.dispatc(removeItem(2));
+store.dispatch(removeItem(2));
 console.log(store.getState()) // [0, 1, 3, 4, 5]
 ```
 
@@ -577,3 +577,38 @@ console.log(store.getState()) // [0, 1, 3, 4, 5]
 - This will create a new object `newObject`.
 - It contains the properties that exist in obj1 and obj2.
 
+```jsx
+const defaultState = {
+    user: 'CamperBot',
+    status: 'offline',
+    friends: '732,982',
+    community: 'freeCodeCamp'
+};
+
+const immutableReducer = (state = defaultState, action) => {
+    switch(action.type) {
+        case 'ONLINE': 
+            return Object.assign({}, state, {status: 'online'});
+        default:
+            return state;
+    }
+};
+
+const wakeUp = () => {
+    return {
+        type: 'ONLINE'
+    }
+};
+
+const store = Redux.createStore(immutableReducer);
+
+store.dispatch(wakeUp());
+console.log(store.getState());
+// { user: 'CamperBot',
+//   status: 'online',
+//   friends: '732,982',
+//   community: 'freeCodeCamp' }
+```
+
+- Overall, this example demonstrates how to use `Object.assign()` utility to create new state objects that are updated in an immutable way.
+- By returning a new object rather than modifying the old one, the reducer maintains a consistent state and avoids introducing bugs caused by shared state.
